@@ -1,6 +1,7 @@
-package com.example.inostudiocase
+package com.example.inostudiocase.di
 
 import android.content.Context
+import com.example.inostudiocase.restapi.MovieService
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -18,7 +19,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    private const val BASE_URL = " https://api.themoviedb.org/3/"
+    private const val BASE_URL = "https://api.themoviedb.org/3/"
 
     @Singleton
     @Provides

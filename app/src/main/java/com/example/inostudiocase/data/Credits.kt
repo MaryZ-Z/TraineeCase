@@ -1,0 +1,12 @@
+import com.example.inostudiocase.data.Movie
+import com.squareup.moshi.Json
+
+data class Credit (
+    val name: String,
+    val character: String,
+    @Json(name = "profile_path")
+    val profilePath: String?,
+)
+{
+    fun posterUrl(): String = "${Movie.IMAGE_BASE_URL}$profilePath"
+}
