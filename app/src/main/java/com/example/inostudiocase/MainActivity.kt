@@ -12,10 +12,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,7 +26,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
@@ -37,7 +38,9 @@ import com.example.inostudiocase.data.Movie
 import com.example.inostudiocase.ui.InostudioCaseApp
 import com.example.inostudiocase.ui.components.ScreenError
 import com.example.inostudiocase.ui.movielist.MovieListViewModel
-import com.example.inostudiocase.ui.theme.*
+import com.example.inostudiocase.ui.theme.GreenCard
+import com.example.inostudiocase.ui.theme.InostudioCaseTheme
+import com.example.inostudiocase.ui.theme.MyGreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -45,12 +48,12 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
+@ExperimentalPagerApi
+@ExperimentalCoilApi
 class MainActivity : ComponentActivity() {
-    @ExperimentalCoilApi
-    @ExperimentalPagerApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent() {
+        setContent {
             InostudioCaseTheme() {
                 InostudioCaseApp()
             }
@@ -82,7 +85,7 @@ fun Search(text: String, onTextChange: (String) -> Unit) {
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
         ),
-        placeholder = { Text (text = stringResource(R.string.search)) },
+        placeholder = { Text(text = stringResource(R.string.search)) },
     )
 }
 
@@ -149,6 +152,7 @@ fun MovieItem(movie: Movie, onMovieClick: (Movie) -> Unit, onLikeClick: (Movie) 
     }
 }
 
+@ExperimentalCoilApi
 @Composable
 fun MainScreen(navController: NavController, showSnackbar: (String) -> Unit) {
     val listViewModel: MovieListViewModel = hiltViewModel()
@@ -183,6 +187,7 @@ fun MainScreen(navController: NavController, showSnackbar: (String) -> Unit) {
     }
 }
 
+@ExperimentalCoilApi
 @Composable
 fun ScreenLoaded(
     items: List<Movie>,
@@ -244,8 +249,10 @@ fun TopAppBar(navController: NavHostController) {
     if (currentScreen != Screen.MainScreen.route) {
         TopAppBar(
             title = {
-                Text(text = stringResource(R.string.movie),
-                style = MaterialTheme.typography.h5)
+                Text(
+                    text = stringResource(R.string.movie),
+                    style = MaterialTheme.typography.h5
+                )
             },
             navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {

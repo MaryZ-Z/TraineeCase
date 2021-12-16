@@ -33,7 +33,7 @@ fun ScreenError(message: String, onRefresh: () -> Unit) {
             Button(onClick = { onRefresh.invoke() }) {
                 Icon(
                     Icons.Filled.Refresh,
-                    contentDescription = "Refresh",
+                    contentDescription = stringResource(R.string.refresh),
                     modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))

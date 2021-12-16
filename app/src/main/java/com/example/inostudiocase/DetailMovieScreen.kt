@@ -1,10 +1,8 @@
 package com.example.inostudiocase
 
-import Credit
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
-import android.text.style.ClickableSpan
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -30,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.inostudiocase.common.DetailState
+import com.example.inostudiocase.data.Credit
 import com.example.inostudiocase.data.Image
 import com.example.inostudiocase.data.Movie
 import com.example.inostudiocase.data.Reviews
@@ -146,6 +145,7 @@ fun Movie(
     }
 }
 
+@ExperimentalCoilApi
 @Composable
 fun Credits(items: List<Credit>) {
     Row(
@@ -230,7 +230,8 @@ fun Reviews(reviews: Reviews) {
         )
     }
     Column(
-        Modifier.padding(14.dp)
+        Modifier
+            .padding(14.dp)
             .clickable { isExpanded = !isExpanded }
     ) {
         Text(

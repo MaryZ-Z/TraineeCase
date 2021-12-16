@@ -1,12 +1,9 @@
 package com.example.inostudiocase.ui.movielist
 
-import androidx.compose.material.Button
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inostudiocase.common.ListState
-import com.example.inostudiocase.common.Screen
 import com.example.inostudiocase.data.Movie
 import com.example.inostudiocase.data.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +15,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MovieListViewModel @Inject constructor(private val repository: MovieRepository
+class MovieListViewModel @Inject constructor(
+    private val repository: MovieRepository
 ) : ViewModel() {
     val state = mutableStateOf<ListState<Movie>>(ListState.Loading)
     val query = mutableStateOf("")
@@ -83,15 +81,17 @@ class MovieListViewModel @Inject constructor(private val repository: MovieReposi
     private fun checkLikes(movies: List<Movie>): ListState.Loaded<Movie> {
         val newMovies = movies.toMutableList().apply {
             replaceAll { movie ->
-                movie.copy(isLiked = repository.likes.any { it.id == movie.id })
+                movie.copy(isLiked = repository.isLiked(movie.id))
             }
         }
         return ListState.Loaded(newMovies)
     }
 
     private fun showError(message: String) {
-        if (state.value !is ListState.Loaded<*>) state.value = ListState.Error(message)
-        viewModelScope.launch { showError.emit(message) }
-
+        if (state.value !is ListState.Loaded) {
+            state.value = ListState.Error(message)
+        } else {
+            viewModelScope.launch { showError.emit(message) }
+        }
     }
 }
