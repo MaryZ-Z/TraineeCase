@@ -87,11 +87,11 @@ class MovieListViewModel @Inject constructor(
         return ListState.Loaded(newMovies)
     }
 
-    private fun showError(message: String) {
+    private suspend fun showError(message: String) {
         if (state.value !is ListState.Loaded) {
             state.value = ListState.Error(message)
         } else {
-            viewModelScope.launch { showError.emit(message) }
+            showError.emit(message)
         }
     }
 }
