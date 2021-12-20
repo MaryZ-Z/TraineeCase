@@ -1,7 +1,9 @@
-package com.example.inostudiocase
+package com.example.inostudiocase.di
 
 import android.content.Context
 import androidx.room.Room
+import com.example.inostudiocase.MovieDao
+import com.example.inostudiocase.room.MovieDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

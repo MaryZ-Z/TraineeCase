@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">InostudioCase</string>
+    <string name="search">Search by movie title</string>
+    <string name="no_found">On request \"%1$s\" no results found</string>
+    <string name="movie">Back</string>
+    <string name="posters">Posters:</string>
+    <string name="rew">Reviews:</string>
+    <string name="roles">Cast:</string>
+    <string name="refresh">Refresh</string>
 </resources>
