@@ -9,6 +9,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.NavHost
@@ -33,38 +34,10 @@ fun InostudioCaseApp() {
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
-    val items = listOf(Screen.DetailMovieScreen, Screen.MainScreen)
-    val bottomItems = listOf(Screen.MainScreen, Screen.ActorsList, Screen.Favourite)
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
     Scaffold(
         scaffoldState = rememberScaffoldState(snackbarHostState = snackbarHostState),
         topBar = { TopAppBar(navController = navController) },
-        bottomBar = {
-            BottomNavigation {
-                bottomItems.forEach { item ->
-                    BottomNavigationItem(
-                        icon = { Icon(imageVector = item.icon, contentDescription = null) },
-                        label = {
-                            Text(
-                                stringResource(item.text),
-                                style = MaterialTheme.typography.h5
-                            )
-                        },
-                        selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
-                        onClick = {
-                            navController.navigate(item.route) {
-                                popUpTo(navController.graph.findStartDestination().id) {
-                                    saveState = true
-                                }
-                                launchSingleTop = true
-                                restoreState = true
-                            }
-                        }
-                    )
-                }
-            }
-        }
+        bottomBar = { BottomBarNav(navController) }
     ) { innerPadding ->
         NavHost(
             navController = navController,
@@ -95,6 +68,36 @@ fun InostudioCaseApp() {
             composable(route = Screen.ActorsList.route) {
                 ActorsListScreen()
             }
+        }
+    }
+}
+
+@Composable
+fun BottomBarNav(navController: NavController) {
+    val bottomItems = listOf(Screen.MainScreen, Screen.ActorsList, Screen.Favourite)
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    BottomNavigation {
+        bottomItems.forEach { item ->
+            BottomNavigationItem(
+                icon = { Icon(imageVector = item.icon, contentDescription = null) },
+                label = {
+                    Text(
+                        stringResource(item.text),
+                        style = MaterialTheme.typography.h5
+                    )
+                },
+                selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
+                onClick = {
+                    navController.navigate(item.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            )
         }
     }
 }
