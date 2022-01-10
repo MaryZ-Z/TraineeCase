@@ -2,16 +2,12 @@ package com.example.inostudiocase.ui
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -25,8 +21,10 @@ import com.example.inostudiocase.MainScreen
 import com.example.inostudiocase.TopAppBar
 import com.example.inostudiocase.common.Screen
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
+@InternalCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalPagerApi
 @Preview
@@ -46,8 +44,13 @@ fun InostudioCaseApp() {
             BottomNavigation {
                 bottomItems.forEach { item ->
                     BottomNavigationItem(
-                        icon =  {Icon(imageVector = item.icon, contentDescription = null)},
-                        label = { Text(stringResource(item.text), style = MaterialTheme.typography.h5) },
+                        icon = { Icon(imageVector = item.icon, contentDescription = null) },
+                        label = {
+                            Text(
+                                stringResource(item.text),
+                                style = MaterialTheme.typography.h5
+                            )
+                        },
                         selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                         onClick = {
                             navController.navigate(item.route) {
@@ -86,10 +89,10 @@ fun InostudioCaseApp() {
             }
 
             composable(route = Screen.Favourite.route) {
-                FavouriteScreen()
+                FavouriteScreen(navController)
             }
 
-            composable(route = Screen.ActorsList.route){
+            composable(route = Screen.ActorsList.route) {
                 ActorsListScreen()
             }
         }

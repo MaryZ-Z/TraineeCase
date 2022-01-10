@@ -10,11 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.inostudiocase.R
-import com.example.inostudiocase.ui.movielist.MovieListViewModel
 
 @Composable
 fun ScreenError(message: String, onRefresh: () -> Unit) {
@@ -36,8 +32,10 @@ fun ScreenError(message: String, onRefresh: () -> Unit) {
                     modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                Text(text = stringResource(R.string.refresh),
-                style = MaterialTheme.typography.h5)
+                Text(
+                    text = stringResource(R.string.refresh),
+                    style = MaterialTheme.typography.h5
+                )
             }
         }
     }
