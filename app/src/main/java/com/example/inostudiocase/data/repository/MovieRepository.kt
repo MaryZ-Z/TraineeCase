@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -56,6 +57,8 @@ class MovieRepository @Inject constructor(
             insert(movie)
         }
     }
+
+    fun favourite() = dao.getAll().map { it.map { it.toMovie() } }
 
     companion object {
         private const val API_KEY =

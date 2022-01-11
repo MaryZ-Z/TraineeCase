@@ -42,7 +42,7 @@ data class Movie(
         posterPath = posterPath,
         title = title,
         overview = overview,
-        isLiked = isLiked
+        releaseDate = releaseDate
     )
 
     companion object {
