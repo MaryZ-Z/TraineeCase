@@ -22,10 +22,8 @@ import com.example.inostudiocase.MainScreen
 import com.example.inostudiocase.TopAppBar
 import com.example.inostudiocase.common.Screen
 import com.google.accompanist.pager.ExperimentalPagerApi
-import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 
-@InternalCoroutinesApi
 @ExperimentalCoilApi
 @ExperimentalPagerApi
 @Preview

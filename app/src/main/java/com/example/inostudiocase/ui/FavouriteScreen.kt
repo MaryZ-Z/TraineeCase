@@ -24,10 +24,8 @@ import com.example.inostudiocase.common.ListState
 import com.example.inostudiocase.common.Screen
 import com.example.inostudiocase.data.Movie
 import com.example.inostudiocase.ui.favouritelist.FavouriteMovieViewModel
-import kotlinx.coroutines.InternalCoroutinesApi
 
 @ExperimentalCoilApi
-@InternalCoroutinesApi
 @Composable
 fun FavouriteScreen(navController: NavController) {
     val viewModel: FavouriteMovieViewModel = hiltViewModel()
