@@ -46,6 +46,8 @@ class MovieRepository @Inject constructor(
         movie.toMovieEntity()
     )
 
+    suspend fun reviews(movieId: Int) = service.reviews(movieId, API_KEY, LANGUAGE).results
+
     suspend fun delete(movie: Movie) = dao.delete(movie.id)
 
     fun isLiked(movieId: Int) = likes.any { it.id == movieId }

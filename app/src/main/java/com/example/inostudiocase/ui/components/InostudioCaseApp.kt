@@ -19,6 +19,7 @@ import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
 import com.example.inostudiocase.DetailMovieScreen
 import com.example.inostudiocase.MainScreen
+import com.example.inostudiocase.ReviewsListScreen
 import com.example.inostudiocase.TopAppBar
 import com.example.inostudiocase.common.Screen
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -56,7 +57,7 @@ fun InostudioCaseApp() {
                 route = Screen.DetailMovieScreen.route,
                 arguments = Screen.DetailMovieScreen.arguments
             ) {
-                DetailMovieScreen()
+                DetailMovieScreen(navController)
             }
 
             composable(route = Screen.Favourite.route) {
@@ -65,6 +66,13 @@ fun InostudioCaseApp() {
 
             composable(route = Screen.ActorsList.route) {
                 ActorsListScreen()
+            }
+
+            composable(
+                route = Screen.ReviewsList.route,
+                arguments = Screen.ReviewsList.arguments
+            ) {
+                ReviewsListScreen()
             }
         }
     }

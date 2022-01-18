@@ -8,10 +8,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
@@ -25,9 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.annotation.ExperimentalCoilApi
 import coil.compose.rememberImagePainter
 import com.example.inostudiocase.common.DetailState
+import com.example.inostudiocase.common.Screen
 import com.example.inostudiocase.data.Credit
 import com.example.inostudiocase.data.Image
 import com.example.inostudiocase.data.Movie
@@ -42,13 +41,13 @@ import com.google.accompanist.pager.HorizontalPager
 @ExperimentalCoilApi
 @ExperimentalPagerApi
 @Composable
-fun DetailMovieScreen() {
+fun DetailMovieScreen(navController: NavController) {
     val viewModel: DetailMovieViewModel = hiltViewModel()
     val state = viewModel.state.value
     Column {
         when (state) {
             is DetailState.Loading -> ScreenLoading()
-            is DetailState.Loaded -> Movie(state.data) {
+            is DetailState.Loaded -> Movie(navController, state.data) {
                 viewModel.onLikeClick(it)
             }
             is DetailState.Error -> ScreenError(state.message, onRefresh = { viewModel.movie() })
@@ -60,7 +59,7 @@ fun DetailMovieScreen() {
 @ExperimentalPagerApi
 @Composable
 fun Movie(
-    movie: Movie, onLikeClick: (Movie) -> Unit
+    navController: NavController, movie: Movie, onLikeClick: (Movie) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -142,6 +141,17 @@ fun Movie(
         Modifier.padding(14.dp)
         // Берем только 1 элемент из списка
         movie.reviews?.results?.firstOrNull()?.let { Reviews(reviews = it) }
+        Row(
+            modifier =
+            Modifier
+                .padding(14.dp)
+        ) {
+            Button(onClick = { navController.navigate(Screen.ReviewsList.navigate(movie.id))},
+            modifier = Modifier.fillMaxWidth()) {
+                Text(text = stringResource(R.string.show_rev),
+                    style = MaterialTheme.typography.h5)
+            }
+        }
     }
 }
 
@@ -219,6 +229,7 @@ fun Posters(items: List<Image>) {
 @Composable
 fun Reviews(reviews: Reviews) {
     var isExpanded by remember { mutableStateOf(false) }
+
     Row(
         modifier =
         Modifier
