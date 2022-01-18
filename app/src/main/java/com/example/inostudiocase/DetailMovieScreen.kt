@@ -141,15 +141,22 @@ fun Movie(
         Modifier.padding(14.dp)
         // Берем только 1 элемент из списка
         movie.reviews?.results?.firstOrNull()?.let { Reviews(reviews = it) }
-        Row(
-            modifier =
-            Modifier
-                .padding(14.dp)
-        ) {
-            Button(onClick = { navController.navigate(Screen.ReviewsList.navigate(movie.id))},
-            modifier = Modifier.fillMaxWidth()) {
-                Text(text = stringResource(R.string.show_rev),
-                    style = MaterialTheme.typography.h5)
+
+        if (movie.reviews?.results?.size!! > 1) {
+            Row(
+                modifier =
+                Modifier
+                    .padding(14.dp)
+            ) {
+                Button(
+                    onClick = { navController.navigate(Screen.ReviewsList.navigate(movie.id)) },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(R.string.show_rev),
+                        style = MaterialTheme.typography.h5
+                    )
+                }
             }
         }
     }

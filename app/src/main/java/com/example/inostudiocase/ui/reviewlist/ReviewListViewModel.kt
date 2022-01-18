@@ -20,7 +20,6 @@ class ReviewListViewModel @Inject constructor(
     private val savedState: SavedStateHandle
 ) : ViewModel() {
     val state = mutableStateOf<ListState<Reviews>>(ListState.Loading)
-    val showError = MutableStateFlow<String?>(null)
     private val movieId = savedState.get<Int>(Screen.ReviewsList.MOVIE_ID) ?: 0
 
     init {
