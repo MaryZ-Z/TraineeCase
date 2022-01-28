@@ -3,6 +3,7 @@ package com.example.inostudiocase.di
 import android.content.Context
 import androidx.room.Room
 import com.example.inostudiocase.MovieDao
+import com.example.inostudiocase.room.ActorsDao
 import com.example.inostudiocase.room.MovieDatabase
 import dagger.Module
 import dagger.Provides
@@ -27,4 +28,8 @@ object DatabaseModule {
     @Singleton
     @Provides
     fun provideMovieDao(movieDatabase: MovieDatabase): MovieDao = movieDatabase.movieDao
+
+    @Singleton
+    @Provides
+    fun provideActorsDao(movieDatabase: MovieDatabase): ActorsDao = movieDatabase.actorsDao
 }

@@ -1,9 +1,6 @@
 package com.example.inostudiocase.restapi
 
-import com.example.inostudiocase.data.Movie
-import com.example.inostudiocase.data.MovieResponse
-import com.example.inostudiocase.data.ReviewResponse
-import com.example.inostudiocase.data.Reviews
+import com.example.inostudiocase.data.*
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -37,4 +34,10 @@ interface MovieService {
         @Query("api_key") apiKey: String,
         @Query("language") lang: String,
     ): ReviewResponse
+
+    @GET("person/popular")
+    suspend fun actors(
+        @Query("api_key") apiKey: String,
+        @Query("language") lang: String,
+    ): ActorsResponse
 }

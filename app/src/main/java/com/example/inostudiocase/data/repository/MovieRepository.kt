@@ -1,9 +1,10 @@
 package com.example.inostudiocase.data.repository
 
 import com.example.inostudiocase.MovieDao
+import com.example.inostudiocase.data.Actors
 import com.example.inostudiocase.data.Movie
-import com.example.inostudiocase.data.room.MovieEntity
 import com.example.inostudiocase.restapi.MovieService
+import com.example.inostudiocase.room.ActorsDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -18,15 +19,23 @@ import javax.inject.Singleton
 @Singleton
 class MovieRepository @Inject constructor(
     private val service: MovieService,
-    private val dao: MovieDao
+    private val dao: MovieDao,
+    private val actorsDao: ActorsDao
 ) {
-    var likes: List<MovieEntity> = emptyList()
+    var likes: List<Movie> = emptyList()
+    var likesActors: List<Actors> = emptyList()
     val flow = MutableSharedFlow<Unit>()
 
     init {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
-            dao.getAll().collect { movies ->
+            dao.getAll().map { it.map { it.toMovie() } }.collect { movies ->
                 likes = movies
+                flow.emit(Unit)
+            }
+        }
+        CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
+            actorsDao.getAll().map { it.map { it.toActors() } }.collect { actors ->
+                likesActors = actors
                 flow.emit(Unit)
             }
         }
@@ -50,7 +59,15 @@ class MovieRepository @Inject constructor(
 
     suspend fun delete(movie: Movie) = dao.delete(movie.id)
 
+    suspend fun insertActor(actors: Actors) = actorsDao.insertActor(
+        actors.toActorsEntity()
+    )
+
+    suspend fun deleteActor(actors: Actors) = actorsDao.deleteActor(actors.id)
+
     fun isLiked(movieId: Int) = likes.any { it.id == movieId }
+
+    fun isLikedActors(actorsId: Int) = likesActors.any { it.id == actorsId }
 
     suspend fun onLikeClick(movie: Movie) {
         if (isLiked(movie.id)) {
@@ -60,7 +77,19 @@ class MovieRepository @Inject constructor(
         }
     }
 
+    suspend fun onLikeActorClick(actors: Actors) {
+        if (isLikedActors(actors.id)) {
+            deleteActor(actors)
+        } else {
+            insertActor(actors)
+        }
+    }
+
     fun favourite() = dao.getAll().map { it.map { it.toMovie() } }
+
+    fun favouriteActors() = actorsDao.getAll().map { it.map { it.toActors() } }
+
+    suspend fun actors() = service.actors(API_KEY, LANGUAGE).results
 
     companion object {
         private const val API_KEY =

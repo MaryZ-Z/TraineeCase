@@ -27,7 +27,6 @@ import kotlinx.coroutines.launch
 
 @ExperimentalCoilApi
 @ExperimentalPagerApi
-@Preview
 @Composable
 fun InostudioCaseApp() {
     val navController = rememberNavController()
@@ -65,7 +64,7 @@ fun InostudioCaseApp() {
             }
 
             composable(route = Screen.ActorsList.route) {
-                ActorsListScreen()
+                ActorsListScreen(navController)
             }
 
             composable(
