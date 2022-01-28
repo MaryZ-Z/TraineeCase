@@ -21,7 +21,7 @@ data class Actors(
         isLikedActors = isLikedActors
     )
 
-    fun posterUrl(): String =
+    fun photoUrl(): String =
         profilePath?.let { "${Movie.IMAGE_BASE_URL}$it" } ?: kotlin.run { Actors.NO_POSTERS }
 
     companion object {

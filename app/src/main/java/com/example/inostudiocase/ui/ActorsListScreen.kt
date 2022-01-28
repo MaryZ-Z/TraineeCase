@@ -41,9 +41,27 @@ fun ActorsListScreen(navController: NavController) {
     Column {
         when (state) {
             is ListState.Loading -> ScreenLoading()
-            is ListState.Loaded -> ScreenLoaded(state.data,
-                onLikeActorClick = { listViewModel.onLikeClick(it) })
+            is ListState.Loaded -> ScreenLoaded (
+                state.data,
+                onLikeActorClick = { listViewModel.onLikeClick(it) }
+            )
             is ListState.Error -> ScreenError(state.message, onRefresh = { listViewModel.actors() })
+        }
+    }
+}
+
+@ExperimentalCoilApi
+@Composable
+fun ScreenLoaded(
+    items: List<Actors>,
+    onLikeActorClick: (Actors) -> Unit
+) {
+    LazyColumn {
+        items(items) {
+            ActorItem(
+                actors = it,
+                onLikeActorClick = onLikeActorClick
+            )
         }
     }
 }
@@ -55,21 +73,18 @@ fun ActorItem(actors: Actors, onLikeActorClick: (Actors) -> Unit) {
     Row(
         Modifier
             .height(IntrinsicSize.Min)
-            //.clickable { onMovieClick.invoke(movie) }
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Image(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .width(120.dp)
                 .fillMaxHeight(),
-            painter = rememberImagePainter(actors.posterUrl()),
+            painter = rememberImagePainter(actors.photoUrl()),
             contentDescription = null,
             contentScale = ContentScale.FillWidth
         )
         Column(
-            modifier =
-            Modifier
+            modifier = Modifier
                 .background(color = GreenCard)
                 .padding(14.dp)
         ) {
@@ -101,22 +116,6 @@ fun ActorItem(actors: Actors, onLikeActorClick: (Actors) -> Unit) {
                     Icon(imageVector = icon, contentDescription = null, tint = Color.Red)
                 }
             }
-        }
-    }
-}
-
-@ExperimentalCoilApi
-@Composable
-fun ScreenLoaded(
-    items: List<Actors>,
-    onLikeActorClick: (Actors) -> Unit
-) {
-    LazyColumn {
-        items(items) {
-            ActorItem(
-                actors = it,
-                onLikeActorClick = onLikeActorClick
-            )
         }
     }
 }
