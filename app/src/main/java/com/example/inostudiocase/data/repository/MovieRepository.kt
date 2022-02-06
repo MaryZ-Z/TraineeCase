@@ -91,11 +91,14 @@ class MovieRepository @Inject constructor(
 
     suspend fun actors() = service.actors(API_KEY, LANGUAGE).results
 
+    suspend fun detailActors(personId: Int) = service.detailActors(personId, API_KEY, LANGUAGE, APPEND_TO_RESPONSE_ACTORS)
+
     companion object {
         private const val API_KEY =
-            "f1c1fa32aa618e6adc168c3cc3cc6c46" //API-ключ небезопасно хранить в таком виде
+            "f1c1fa32aa618e6adc168c3cc3cc6c46"
         private const val LANGUAGE = "en-US"
         private const val INCLUDE_IMAGE_LANGUAGE = "en, null"
         private const val APPEND_TO_RESPONSE = "credits,images,reviews,videos"
+        private const val APPEND_TO_RESPONSE_ACTORS = "images,movie_credits"
     }
 }

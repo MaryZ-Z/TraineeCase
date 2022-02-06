@@ -7,18 +7,19 @@ data class Actors(
     @Json(name = "profile_path")
     val profilePath: String?,
     val id: Int,
-    val adult: Boolean,
     val name: String,
     val popularity: Float,
     val isLikedActors: Boolean = false,
+    val images: ActorImageResponse?,
+    @Json(name = "movie_credits")
+    val movieCredits: MovieCreditsResponse?
 ) {
     fun toActorsEntity(): ActorsEntity = ActorsEntity(
         id = id,
         profilePath = profilePath,
-        adult = adult,
         name = name,
         popularity = popularity,
-        isLikedActors = isLikedActors
+        isLikedActors = isLikedActors,
     )
 
     fun photoUrl(): String =
