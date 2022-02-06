@@ -144,7 +144,7 @@ fun Movie(
                 )
             }
         }
-        movie.credits?.cast?.let { Credits(navController, items = it, onCreditClick) }
+        movie.credits?.cast?.let { Credits(items = it, onCreditClick) }
         movie.images?.allImages()?.let { if (it.isNotEmpty()) Posters(items = it) }
         Modifier.padding(14.dp)
         // Берем только 1 элемент из списка
@@ -172,7 +172,7 @@ fun Movie(
 
 @ExperimentalCoilApi
 @Composable
-fun Credits(navController: NavController, items: List<Credit>, onCreditClick: (Credit) -> Unit) {
+fun Credits(items: List<Credit>, onCreditClick: (Credit) -> Unit) {
     Row(
         modifier =
         Modifier
@@ -183,7 +183,7 @@ fun Credits(navController: NavController, items: List<Credit>, onCreditClick: (C
             style = MaterialTheme.typography.h1
         )
     }
-    LazyRow() {
+    LazyRow {
         items(items) { credits ->
             Column(
                 Modifier
