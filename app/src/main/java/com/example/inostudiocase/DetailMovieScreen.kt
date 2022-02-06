@@ -47,9 +47,14 @@ fun DetailMovieScreen(navController: NavController) {
     Column {
         when (state) {
             is DetailState.Loading -> ScreenLoading()
-            is DetailState.Loaded -> Movie(navController, state.data) {
-                viewModel.onLikeClick(it)
-            }
+            is DetailState.Loaded -> Movie(
+                navController = navController,
+                movie = state.data,
+                onLikeClick = { viewModel.onLikeClick(it) },
+                onCreditClick = {
+                    navController.navigate(Screen.DetailActorScreen.navigate(it.id))
+                }
+            )
             is DetailState.Error -> ScreenError(state.message, onRefresh = { viewModel.movie() })
         }
     }
@@ -59,7 +64,10 @@ fun DetailMovieScreen(navController: NavController) {
 @ExperimentalPagerApi
 @Composable
 fun Movie(
-    navController: NavController, movie: Movie, onLikeClick: (Movie) -> Unit
+    navController: NavController,
+    movie: Movie,
+    onLikeClick: (Movie) -> Unit,
+    onCreditClick: (Credit) -> Unit
 ) {
     val scrollState = rememberScrollState()
     Column(
@@ -136,7 +144,7 @@ fun Movie(
                 )
             }
         }
-        movie.credits?.cast?.let { Credits(items = it) }
+        movie.credits?.cast?.let { Credits(navController, items = it, onCreditClick) }
         movie.images?.allImages()?.let { if (it.isNotEmpty()) Posters(items = it) }
         Modifier.padding(14.dp)
         // Берем только 1 элемент из списка
@@ -164,7 +172,7 @@ fun Movie(
 
 @ExperimentalCoilApi
 @Composable
-fun Credits(items: List<Credit>) {
+fun Credits(navController: NavController, items: List<Credit>, onCreditClick: (Credit) -> Unit) {
     Row(
         modifier =
         Modifier
@@ -175,10 +183,12 @@ fun Credits(items: List<Credit>) {
             style = MaterialTheme.typography.h1
         )
     }
-    LazyRow {
+    LazyRow() {
         items(items) { credits ->
             Column(
-                Modifier.padding(14.dp)
+                Modifier
+                    .padding(14.dp)
+                    .clickable { onCreditClick.invoke(credits) }
             ) {
                 Image(
                     modifier =
@@ -187,7 +197,7 @@ fun Credits(items: List<Credit>) {
                         .height(180.dp),
                     painter = rememberImagePainter(credits.posterUrl()),
                     contentDescription = null,
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(

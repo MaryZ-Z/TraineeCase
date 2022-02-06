@@ -38,6 +38,14 @@ interface MovieService {
     @GET("person/popular")
     suspend fun actors(
         @Query("api_key") apiKey: String,
-        @Query("language") lang: String,
+        @Query("language") lang: String
     ): ActorsResponse
+
+    @GET("person/{person_id}")
+    suspend fun detailActors(
+        @Path("person_id") personId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") lang: String,
+        @Query("append_to_response") appendToResponse: String
+    ): Actors
 }

@@ -36,4 +36,15 @@ sealed class Screen(val route: String, val icon: ImageVector, @StringRes val tex
             fun navigate(movieId: Int) = "$ROUTE/$movieId"
         }
     }
+
+    class DetailActorScreen : Screen(route, Icons.Default.Face, R.string.details) {
+        companion object {
+            private const val ROUTE = "detailActors"
+            const val PERSON_ID = "personId"
+            val route = "$ROUTE/{$PERSON_ID}"
+            val arguments = listOf(navArgument(PERSON_ID) { type = NavType.IntType })
+
+            fun navigate(personId: Int) = "$ROUTE/$personId"
+        }
+    }
 }

@@ -17,10 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import coil.annotation.ExperimentalCoilApi
-import com.example.inostudiocase.DetailMovieScreen
-import com.example.inostudiocase.MainScreen
-import com.example.inostudiocase.ReviewsListScreen
-import com.example.inostudiocase.TopAppBar
+import com.example.inostudiocase.*
 import com.example.inostudiocase.common.Screen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.launch
@@ -72,6 +69,13 @@ fun InostudioCaseApp() {
                 arguments = Screen.ReviewsList.arguments
             ) {
                 ReviewsListScreen()
+            }
+
+            composable(
+                route = Screen.DetailActorScreen.route,
+                arguments = Screen.DetailActorScreen.arguments
+            ) {
+                DetailActorScreen(navController)
             }
         }
     }

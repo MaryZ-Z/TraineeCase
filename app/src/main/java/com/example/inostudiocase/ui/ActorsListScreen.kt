@@ -2,6 +2,7 @@ package com.example.inostudiocase.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -27,7 +28,9 @@ import coil.compose.rememberImagePainter
 import com.example.inostudiocase.R
 import com.example.inostudiocase.ScreenLoading
 import com.example.inostudiocase.common.ListState
+import com.example.inostudiocase.common.Screen
 import com.example.inostudiocase.data.Actors
+import com.example.inostudiocase.data.Movie
 import com.example.inostudiocase.ui.actorslist.ActorsListViewModel
 import com.example.inostudiocase.ui.components.ScreenError
 import com.example.inostudiocase.ui.theme.GreenCard
@@ -43,7 +46,8 @@ fun ActorsListScreen(navController: NavController) {
             is ListState.Loading -> ScreenLoading()
             is ListState.Loaded -> ScreenLoaded (
                 state.data,
-                onLikeActorClick = { listViewModel.onLikeClick(it) }
+                onLikeActorClick = { listViewModel.onLikeClick(it) },
+                onActorClick = {navController.navigate(Screen.DetailActorScreen.navigate(it.id)) },
             )
             is ListState.Error -> ScreenError(state.message, onRefresh = { listViewModel.actors() })
         }
@@ -54,13 +58,15 @@ fun ActorsListScreen(navController: NavController) {
 @Composable
 fun ScreenLoaded(
     items: List<Actors>,
-    onLikeActorClick: (Actors) -> Unit
+    onLikeActorClick: (Actors) -> Unit,
+    onActorClick: (Actors) -> Unit
 ) {
     LazyColumn {
         items(items) {
             ActorItem(
                 actors = it,
-                onLikeActorClick = onLikeActorClick
+                onLikeActorClick = onLikeActorClick,
+                onActorClick = onActorClick,
             )
         }
     }
@@ -69,10 +75,11 @@ fun ScreenLoaded(
 //Карточка актера
 @ExperimentalCoilApi
 @Composable
-fun ActorItem(actors: Actors, onLikeActorClick: (Actors) -> Unit) {
+fun ActorItem(actors: Actors, onLikeActorClick: (Actors) -> Unit, onActorClick: (Actors) -> Unit,) {
     Row(
         Modifier
             .height(IntrinsicSize.Min)
+            .clickable { onActorClick.invoke(actors) }
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Image(

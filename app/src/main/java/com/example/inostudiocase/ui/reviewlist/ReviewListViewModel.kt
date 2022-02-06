@@ -6,18 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.inostudiocase.common.ListState
 import com.example.inostudiocase.common.Screen
-import com.example.inostudiocase.data.Movie
 import com.example.inostudiocase.data.Reviews
 import com.example.inostudiocase.data.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ReviewListViewModel @Inject constructor(
     private val repository: MovieRepository,
-    private val savedState: SavedStateHandle
+    savedState: SavedStateHandle
 ) : ViewModel() {
     val state = mutableStateOf<ListState<Reviews>>(ListState.Loading)
     private val movieId = savedState.get<Int>(Screen.ReviewsList.MOVIE_ID) ?: 0

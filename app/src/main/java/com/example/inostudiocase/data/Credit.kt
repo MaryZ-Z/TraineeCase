@@ -7,6 +7,7 @@ data class Credit(
     val character: String,
     @Json(name = "profile_path")
     val profilePath: String?,
+    val id: Int,
 ) {
     fun posterUrl(): String = "${Movie.IMAGE_BASE_URL}$profilePath"
 }
