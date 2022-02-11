@@ -27,7 +27,7 @@ import com.example.inostudiocase.ui.favouritelist.FavouriteMovieViewModel
 
 @ExperimentalCoilApi
 @Composable
-fun FavouriteScreen(navController: NavController) {
+fun FavouriteMovieScreen(navController: NavController) {
     val viewModel: FavouriteMovieViewModel = hiltViewModel()
     val state = viewModel.state.value
     Column {

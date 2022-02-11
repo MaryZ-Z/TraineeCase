@@ -8,7 +8,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -16,8 +15,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navigation
 import coil.annotation.ExperimentalCoilApi
 import com.example.inostudiocase.*
+import com.example.inostudiocase.common.BottomNav
 import com.example.inostudiocase.common.Screen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.launch
@@ -36,46 +37,61 @@ fun InostudioCaseApp() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.MainScreen.route,
+            startDestination = BottomNav.MovieList.route,
             modifier = Modifier.padding(innerPadding)
         ) {
-            composable(route = Screen.MainScreen.route) {
-                MainScreen(
-                    navController = navController
-                ) {
-                    scope.launch {
-                        snackbarHostState.showSnackbar(it)
+            navigation(
+                startDestination = Screen.MainScreen.route,
+                route = BottomNav.MovieList.route
+            ) {
+                composable(route = Screen.MainScreen.route) {
+                    MainScreen(
+                        navController = navController
+                    ) {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(it)
+                        }
                     }
+                }
+
+                composable(
+                    route = Screen.DetailMovieScreen.route,
+                    arguments = Screen.DetailMovieScreen.arguments
+                ) {
+                    DetailMovieScreen(navController)
+                }
+
+                composable(
+                    route = Screen.ReviewsList.route,
+                    arguments = Screen.ReviewsList.arguments
+                ) {
+                    ReviewsListScreen()
                 }
             }
 
-            composable(
-                route = Screen.DetailMovieScreen.route,
-                arguments = Screen.DetailMovieScreen.arguments
+            navigation(
+                startDestination = Screen.ActorsList.route,
+                route = BottomNav.AllActors.route
             ) {
-                DetailMovieScreen(navController)
+                composable(route = Screen.ActorsList.route) {
+                    ActorsListScreen(navController)
+                }
+
+                composable(
+                    route = Screen.DetailActorScreen.route,
+                    arguments = Screen.DetailActorScreen.arguments
+                ) {
+                    DetailActorScreen(navController)
+                }
             }
 
-            composable(route = Screen.Favourite.route) {
-                FavouriteScreen(navController)
-            }
-
-            composable(route = Screen.ActorsList.route) {
-                ActorsListScreen(navController)
-            }
-
-            composable(
-                route = Screen.ReviewsList.route,
-                arguments = Screen.ReviewsList.arguments
+            navigation(
+                startDestination = Screen.Favourite.route,
+                route = BottomNav.AllFavourite.route
             ) {
-                ReviewsListScreen()
-            }
-
-            composable(
-                route = Screen.DetailActorScreen.route,
-                arguments = Screen.DetailActorScreen.arguments
-            ) {
-                DetailActorScreen(navController)
+                composable(route = Screen.Favourite.route) {
+                    FavouriteScreen(navController)
+                }
             }
         }
     }
@@ -83,7 +99,7 @@ fun InostudioCaseApp() {
 
 @Composable
 fun BottomBarNav(navController: NavController) {
-    val bottomItems = listOf(Screen.MainScreen, Screen.ActorsList, Screen.Favourite)
+    val bottomItems = BottomNav.values()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     BottomNavigation {

@@ -8,10 +8,10 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.example.inostudiocase.R
 
-sealed class Screen(val route: String, val icon: ImageVector, @StringRes val text: Int) {
-    object MainScreen : Screen("main_screen", Icons.Default.Home, R.string.home)
+sealed class Screen(val route: String) {
+    object MainScreen : Screen("main_screen")
 
-    class DetailMovieScreen : Screen(route, Icons.Default.KeyboardArrowRight, R.string.details) {
+    class DetailMovieScreen : Screen(route) {
         companion object {
             private const val ROUTE = "movie"
             const val MOVIE_ID = "movieId"
@@ -22,11 +22,11 @@ sealed class Screen(val route: String, val icon: ImageVector, @StringRes val tex
         }
     }
 
-    object Favourite : Screen("favourite", Icons.Default.Favorite, R.string.fav)
+    object Favourite : Screen("favourite")
 
-    object ActorsList : Screen("actors_list", Icons.Default.Face, R.string.actors)
+    object ActorsList : Screen("actors_list")
 
-    class ReviewsList : Screen(route, Icons.Default.List, R.string.fav) {
+    class ReviewsList : Screen(route) {
         companion object {
             private const val ROUTE = "reviews"
             const val MOVIE_ID = "movieId"
@@ -37,7 +37,7 @@ sealed class Screen(val route: String, val icon: ImageVector, @StringRes val tex
         }
     }
 
-    class DetailActorScreen : Screen(route, Icons.Default.Face, R.string.details) {
+    class DetailActorScreen : Screen(route) {
         companion object {
             private const val ROUTE = "detailActors"
             const val PERSON_ID = "personId"
